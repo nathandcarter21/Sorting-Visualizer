@@ -11,8 +11,6 @@ const Content = () => {
     let [rendering, setRendering] = useState(false)
     let [scrambled, setScrambled] = useState(true)
     let [time, setTime] = useState(0.0)
-    let [swaps, setSwaps] = useState(0)
-
     const sleep = (ms) => {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -38,16 +36,15 @@ const Content = () => {
 
         for (let i = 0; i < variations.length; i++) {
             setArray(variations[i]);
-            await sleep(20)
+            await sleep(1)
         }
         setRendering(false)
     }
 
     const BubbleSort = async () => {
-        let start = new Date().getTime();
         let variations = []
         let sorted = false
-        let countSwaps = 0
+        let start = new Date().getTime();
         while (!sorted) {
             sorted = true
             for (let i = 0; i < array.length - 1; i++) {
@@ -56,21 +53,17 @@ const Content = () => {
                     array[i] = array[i + 1]
                     array[i + 1] = temp
                     sorted = false
-                    countSwaps++
                 }
             }
             const tempArray = [...array]
             variations.push(tempArray)
         }
         let end = new Date().getTime();
-        setTime((end - start) / 1000)
-        setSwaps(countSwaps)
+        setTime(end - start)
         RenderVariations(variations)
     }
 
     const MergeSort = async () => {
-        let start = new Date().getTime();
-        let countSwaps = 0
         const merge = async (nums, left, mid, right) => {
             let i = left;
             let j = mid + 1;
@@ -86,26 +79,22 @@ const Content = () => {
                     i++;
                     k++;
                 }
-                countSwaps++
             }
             while (i <= mid) {
                 temp[k] = nums[i];
                 i++;
                 k++;
-                countSwaps++
             }
             while (j <= right) {
                 temp[k] = nums[j];
                 j++;
                 k++;
-                countSwaps++
             }
             for (let i = left; i < k; i++) {
                 nums[i] = temp[i];
             }
             const tempArray = [...nums]
             variations.push(tempArray)
-            setSwaps(countSwaps)
         }
 
         const mergeRec = async (nums, left, right) => {
@@ -117,63 +106,103 @@ const Content = () => {
             }
         }
         let variations = [];
+        let start = new Date().getTime();
+
         mergeRec(array, 0, 499);
         let end = new Date().getTime();
-        setTime((end - start) / 1000)
+        setTime(end - start)
         RenderVariations(variations);
     }
 
     const QuickSort = () => {
-        let start = new Date().getTime();
-        let countSwaps = 0
-        const partition = (nums, low, high, pivot) => {
-            let left = low;
-            let right = high;
+        // const partition = (nums, low, high, pivot) => {
+        //     let left = low;
+        //     let right = high;
 
-            let temp = nums[left]
-            nums[left] = nums[right]
-            nums[right] = temp
-            countSwaps++
+        //     let temp = nums[left]
+        //     nums[left] = nums[right]
+        //     nums[right] = temp
 
-            while (low < high) {
-                while (nums[left] > nums[low] && low !== high) {
-                    low++;
+        //     while (low < high) {
+        //         while (nums[left] > nums[low] && low !== high) {
+        //             low++;
+        //         }
+        //         while (nums[left] < nums[high] && low !== high) {
+        //             high--;
+        //         }
+        //         if (low < high) {
+        //             let temp = nums[low]
+        //             nums[low] = nums[high]
+        //             nums[high] = temp
+        //         }
+        //     }
+
+        //     temp = nums[left]
+        //     nums[low] = nums[left]
+        //     nums[low] = left
+
+        //     const tempArray = [...nums]
+        //     variations.push(tempArray)
+        //     return low;
+        // }
+
+        // const sort = (nums, low, high) => {
+        //     if (high - low > 0) {
+        //         let pivot = (low + high) / 2;
+        //         pivot = partition(nums, low, high, pivot);
+        //         sort(nums, low, pivot - 1);
+        //         sort(nums, pivot + 1, high);
+        //     }
+        // }
+
+        //let variations = []
+        //variations.push(sort(array, 0, 49))
+        //RenderVariations(variations)
+
+        const partition = (nums, left, right, pivot) => {
+            pivot = nums[pivot]
+            let i = left;
+            let j = right;
+
+
+            while (i <= j) {
+                while (nums[i] < pivot) {
+                    i++;
                 }
-                while (nums[left] < nums[high] && low !== high) {
-                    high--;
+                while (nums[j] > pivot) {
+                    j--;
                 }
-                if (low < high) {
-                    let temp = nums[low]
-                    nums[low] = nums[high]
-                    nums[high] = temp
-                    countSwaps++
+                if (i <= j) {
+                    let temp = nums[i]
+                    nums[i] = nums[j]
+                    nums[j] = temp
+                    i++;
+                    j--;
                 }
             }
-
-            temp = nums[left]
-            nums[low] = nums[left]
-            nums[low] = left
-            countSwaps++
-            const tempArray = [...nums];
-            variations.push(tempArray)
-
-            return low;
+            variations.push([...nums])
+            return i;
         }
 
-        const sort = (nums, low, high) => {
-            if (high - low > 0) {
-                let pivot = (low + high) / 2;
-                pivot = partition(nums, low, high, pivot);
-                sort(nums, low, pivot - 1);
-                sort(nums, pivot + 1, high);
+        const sort = (nums, left, right) => {
+            if (right - left > 0) {
+                let pivot = Math.floor((left + right) / 2)
+                pivot = partition(nums, left, right, pivot)
+                sort(nums, left, pivot - 1)
+                sort(nums, pivot, right)
             }
         }
         let variations = []
-        sort(array, 0, 499)
+        const temp = [...array]
+        let start = new Date().getTime();
+
+        sort(temp, 0, 499)
         let end = new Date().getTime();
-        setTime((end - start) / 1000)
+        setTime(end - start)
+
+        // console.log(variations)
         RenderVariations(variations)
-        setSwaps(countSwaps)
+
     }
 
     return (
@@ -200,8 +229,7 @@ const Content = () => {
                     setScrambled(true)
                 }
             }}>Scramble</button>
-            <h3>Time: {time}s</h3>
-            <h3>Swaps: {swaps}</h3>
+            <h3>Time: {time / 1000}</h3>
         </div >
     )
 }
