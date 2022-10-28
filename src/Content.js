@@ -32,17 +32,6 @@ const Content = () => {
         setScrambled(true)
     }
 
-    const RenderVariations = async (variations) => {
-        setRendering(true)
-        setScrambled(false)
-
-        for (let i = 0; i < variations.length; i++) {
-            setArray(variations[i]);
-            await sleep(1)
-        }
-        setRendering(false)
-    }
-
     const animateColumnsBubble = async (animations) => {
         setRendering(true)
         setScrambled(false)
@@ -58,18 +47,11 @@ const Content = () => {
             } else {
                 colArray[animations[i][0]].style.backgroundColor = 'red'
                 colArray[animations[i][1]].style.backgroundColor = 'red'
-                await sleep(1)
+                await sleep(10)
                 colArray[animations[i][0]].style.backgroundColor = 'black'
                 colArray[animations[i][1]].style.backgroundColor = 'black'
-                await sleep(1)
+                await sleep(10)
             }
-        }
-        for (let i = 0; i < colArray.length; i++) {
-            colArray[i].style.backgroundColor = 'red'
-            await sleep(2)
-            colArray[i].style.backgroundColor = 'black'
-            await sleep(2)
-
         }
         let end = new Date().getTime();
         setVisualTime(end - start)
@@ -79,7 +61,6 @@ const Content = () => {
 
     const BubbleSort = async () => {
         const tempArray = [...array]
-        let variations = []
         let animations = []
         let sorted = false
         let start = new Date().getTime();
@@ -98,12 +79,9 @@ const Content = () => {
                 }
 
             }
-            // const tempArray = [...array]
-            // variations.push(tempArray)
         }
         let end = new Date().getTime();
         setRealTime(end - start)
-        //RenderVariations(variations)
         animateColumnsBubble(animations)
     }
 
@@ -116,55 +94,15 @@ const Content = () => {
             if (animations[i][0] === 0) {
                 colArray[animations[i][1]].style.backgroundColor = 'red'
                 colArray[animations[i][2]].style.backgroundColor = 'red'
-                await sleep(5)
+                await sleep(10)
                 colArray[animations[i][1]].style.backgroundColor = 'black'
                 colArray[animations[i][2]].style.backgroundColor = 'black'
-                await sleep(5)
+                await sleep(10)
             }
             else if (animations[i][0] === 1) {
                 const newHeight = `${animations[i][2] * 5}px`
                 colArray[animations[i][1]].style.height = newHeight;
             }
-        }
-        for (let i = 0; i < colArray.length; i++) {
-            colArray[i].style.backgroundColor = 'red'
-            await sleep(2)
-            colArray[i].style.backgroundColor = 'black'
-            await sleep(2)
-
-        }
-        setRendering(false)
-        let end = new Date().getTime();
-        setVisualTime(end - start)
-        setScrambled(false)
-
-    }
-    const animateColumnsQuick = async (animations) => {
-        setRendering(true)
-        setScrambled(false)
-        let start = new Date().getTime();
-        const colArray = document.getElementsByClassName("col")
-        for (let i = 0; i < animations.length; i++) {
-            if (animations[i][0] === 0) {
-                colArray[animations[i][1]].style.backgroundColor = 'red'
-                colArray[animations[i][2]].style.backgroundColor = 'red'
-                await sleep(10)
-                colArray[animations[i][1]].style.backgroundColor = 'black'
-                colArray[animations[i][2]].style.backgroundColor = 'black'
-                await sleep(10)
-            }
-            else if (animations[i][0] === 1) {
-                const tempHeight = colArray[animations[i][1]].style.height;
-                colArray[animations[i][1]].style.height = colArray[animations[i][2]].style.height;
-                colArray[animations[i][2]].style.height = tempHeight;
-            }
-        }
-        for (let i = 0; i < colArray.length; i++) {
-            colArray[i].style.backgroundColor = 'red'
-            await sleep(2)
-            colArray[i].style.backgroundColor = 'black'
-            await sleep(2)
-
         }
         setRendering(false)
         let end = new Date().getTime();
@@ -183,7 +121,6 @@ const Content = () => {
             while (i <= mid && j <= right) {
                 animations.push([0, i, j])
                 if (nums[i] > nums[j]) {
-                    // animations.push([1, i, j])
                     temp[k] = nums[j];
                     j++;
                     k++;
@@ -208,8 +145,6 @@ const Content = () => {
                 animations.push([1, i, temp[i]])
                 nums[i] = temp[i];
             }
-            // const tempArray = [...nums]
-            // variations.push(tempArray)
         }
 
         const mergeRec = async (nums, left, right) => {
@@ -220,66 +155,46 @@ const Content = () => {
                 merge(nums, left, mid, right);
             }
         }
-        //let variations = [];
         let start = new Date().getTime();
         const tempArray = [...array]
         mergeRec(tempArray, 0, 99);
         let end = new Date().getTime();
         setRealTime(end - start)
         animateColumnsMerge(animations)
-        //RenderVariations(variations);
+    }
+
+    const animateColumnsQuick = async (animations) => {
+        setRendering(true)
+        setScrambled(false)
+        let start = new Date().getTime();
+        const colArray = document.getElementsByClassName("col")
+        for (let i = 0; i < animations.length; i++) {
+            if (animations[i][0] === 0) {
+                colArray[animations[i][1]].style.backgroundColor = 'red'
+                colArray[animations[i][2]].style.backgroundColor = 'red'
+                await sleep(10)
+                colArray[animations[i][1]].style.backgroundColor = 'black'
+                colArray[animations[i][2]].style.backgroundColor = 'black'
+                await sleep(10)
+            }
+            else if (animations[i][0] === 1) {
+                const tempHeight = colArray[animations[i][1]].style.height;
+                colArray[animations[i][1]].style.height = colArray[animations[i][2]].style.height;
+                colArray[animations[i][2]].style.height = tempHeight;
+            }
+        }
+        setRendering(false)
+        let end = new Date().getTime();
+        setVisualTime(end - start)
+        setScrambled(false)
     }
 
     const QuickSort = () => {
-        // const partition = (nums, low, high, pivot) => {
-        //     let left = low;
-        //     let right = high;
-
-        //     let temp = nums[left]
-        //     nums[left] = nums[right]
-        //     nums[right] = temp
-
-        //     while (low < high) {
-        //         while (nums[left] > nums[low] && low !== high) {
-        //             low++;
-        //         }
-        //         while (nums[left] < nums[high] && low !== high) {
-        //             high--;
-        //         }
-        //         if (low < high) {
-        //             let temp = nums[low]
-        //             nums[low] = nums[high]
-        //             nums[high] = temp
-        //         }
-        //     }
-
-        //     temp = nums[left]
-        //     nums[low] = nums[left]
-        //     nums[low] = left
-
-        //     const tempArray = [...nums]
-        //     variations.push(tempArray)
-        //     return low;
-        // }
-
-        // const sort = (nums, low, high) => {
-        //     if (high - low > 0) {
-        //         let pivot = (low + high) / 2;
-        //         pivot = partition(nums, low, high, pivot);
-        //         sort(nums, low, pivot - 1);
-        //         sort(nums, pivot + 1, high);
-        //     }
-        // }
-
-        //let variations = []
-        //variations.push(sort(array, 0, 49))
-        //RenderVariations(variations)
         let animations = []
         const partition = (nums, left, right, pivot) => {
             let pivotVal = nums[pivot]
             let i = left;
             let j = right;
-
 
             while (i <= j) {
                 animations.push([0, i, pivot])
@@ -299,7 +214,6 @@ const Content = () => {
                     j--;
                 }
             }
-            variations.push([...nums])
             return i;
         }
 
@@ -311,14 +225,11 @@ const Content = () => {
                 sort(nums, pivot, right)
             }
         }
-        let variations = []
         const temp = [...array]
         let start = new Date().getTime();
-
         sort(temp, 0, 99)
         let end = new Date().getTime();
         setRealTime(end - start)
-        // RenderVariations(variations)
         animateColumnsQuick(animations)
     }
 
@@ -346,8 +257,8 @@ const Content = () => {
                     setScrambled(true)
                 }
             }}>Scramble</button>
-            <h3>Real time: {realTime / 1000}</h3>
-            <h3>Visual time: {visualTime / 1000}</h3>
+            <h3>Real time: {realTime}ms</h3>
+            <h3>Visual time: {visualTime / 1000}s</h3>
         </div >
     )
 }
