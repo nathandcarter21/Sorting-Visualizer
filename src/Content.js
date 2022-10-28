@@ -7,7 +7,7 @@ const Content = () => {
         setRandomArray();
     }, [])
 
-    let [array, setArray] = useState([])
+    let [array, setArray] = useState([7, 5, 8, 10, 6, 9, 1, 2, 4, 3])
     let [rendering, setRendering] = useState(false)
     let [scrambled, setScrambled] = useState(true)
     let [realTime, setRealTime] = useState(0.0)
@@ -164,6 +164,7 @@ const Content = () => {
     }
 
     const animateColumnsQuick = async (animations) => {
+        console.log(array)
         setRendering(true)
         setScrambled(false)
         let start = new Date().getTime();
@@ -206,10 +207,12 @@ const Content = () => {
                     j--;
                 }
                 if (i <= j) {
-                    animations.push([1, j, i])
-                    let temp = nums[i]
-                    nums[i] = nums[j]
-                    nums[j] = temp
+                    if (i !== j) {
+                        animations.push([1, i, j])
+                        let temp = nums[i]
+                        nums[i] = nums[j]
+                        nums[j] = temp
+                    }
                     i++;
                     j--;
                 }
