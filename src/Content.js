@@ -64,6 +64,13 @@ const Content = () => {
                 await sleep(1)
             }
         }
+        for (let i = 0; i < colArray.length; i++) {
+            colArray[i].style.backgroundColor = 'red'
+            await sleep(2)
+            colArray[i].style.backgroundColor = 'black'
+            await sleep(2)
+
+        }
         let end = new Date().getTime();
         setVisualTime(end - start)
         setRendering(false)
@@ -109,15 +116,55 @@ const Content = () => {
             if (animations[i][0] === 0) {
                 colArray[animations[i][1]].style.backgroundColor = 'red'
                 colArray[animations[i][2]].style.backgroundColor = 'red'
-                await sleep(1)
+                await sleep(5)
                 colArray[animations[i][1]].style.backgroundColor = 'black'
                 colArray[animations[i][2]].style.backgroundColor = 'black'
-                await sleep(1)
+                await sleep(5)
             }
             else if (animations[i][0] === 1) {
                 const newHeight = `${animations[i][2] * 5}px`
                 colArray[animations[i][1]].style.height = newHeight;
             }
+        }
+        for (let i = 0; i < colArray.length; i++) {
+            colArray[i].style.backgroundColor = 'red'
+            await sleep(2)
+            colArray[i].style.backgroundColor = 'black'
+            await sleep(2)
+
+        }
+        setRendering(false)
+        let end = new Date().getTime();
+        setVisualTime(end - start)
+        setScrambled(false)
+
+    }
+    const animateColumnsQuick = async (animations) => {
+        setRendering(true)
+        setScrambled(false)
+        let start = new Date().getTime();
+        const colArray = document.getElementsByClassName("col")
+        for (let i = 0; i < animations.length; i++) {
+            if (animations[i][0] === 0) {
+                colArray[animations[i][1]].style.backgroundColor = 'red'
+                colArray[animations[i][2]].style.backgroundColor = 'red'
+                await sleep(10)
+                colArray[animations[i][1]].style.backgroundColor = 'black'
+                colArray[animations[i][2]].style.backgroundColor = 'black'
+                await sleep(10)
+            }
+            else if (animations[i][0] === 1) {
+                const tempHeight = colArray[animations[i][1]].style.height;
+                colArray[animations[i][1]].style.height = colArray[animations[i][2]].style.height;
+                colArray[animations[i][2]].style.height = tempHeight;
+            }
+        }
+        for (let i = 0; i < colArray.length; i++) {
+            colArray[i].style.backgroundColor = 'red'
+            await sleep(2)
+            colArray[i].style.backgroundColor = 'black'
+            await sleep(2)
+
         }
         setRendering(false)
         let end = new Date().getTime();
@@ -227,21 +274,24 @@ const Content = () => {
         //let variations = []
         //variations.push(sort(array, 0, 49))
         //RenderVariations(variations)
-
+        let animations = []
         const partition = (nums, left, right, pivot) => {
-            pivot = nums[pivot]
+            let pivotVal = nums[pivot]
             let i = left;
             let j = right;
 
 
             while (i <= j) {
-                while (nums[i] < pivot) {
+                animations.push([0, i, pivot])
+                while (nums[i] < pivotVal) {
                     i++;
                 }
-                while (nums[j] > pivot) {
+                animations.push([0, j, pivot])
+                while (nums[j] > pivotVal) {
                     j--;
                 }
                 if (i <= j) {
+                    animations.push([1, j, i])
                     let temp = nums[i]
                     nums[i] = nums[j]
                     nums[j] = temp
@@ -268,7 +318,8 @@ const Content = () => {
         sort(temp, 0, 99)
         let end = new Date().getTime();
         setRealTime(end - start)
-        RenderVariations(variations)
+        // RenderVariations(variations)
+        animateColumnsQuick(animations)
     }
 
     return (
