@@ -10,24 +10,26 @@ const Content = () => {
     let [array, setArray] = useState([])
     let [rendering, setRendering] = useState(false)
     let [scrambled, setScrambled] = useState(true)
-    let [time, setTime] = useState(0.0)
+    let [realTime, setRealTime] = useState(0.0)
+    let [visualTime, setVisualTime] = useState(0.0)
     const sleep = (ms) => {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     const setRandomArray = () => {
-        let tempArray = [500]
-        for (let i = 0; i < 500; i++) {
-            tempArray[i] = i
+        let tempArray = [100]
+        for (let i = 0; i < 100; i++) {
+            tempArray[i] = i + 1
         }
-        for (let i = 0; i < 500; i++) {
-            let rand = Math.floor(Math.random() * 500)
+        for (let i = 0; i < 100; i++) {
+            let rand = Math.floor(Math.random() * 100)
             let temp = tempArray[rand]
             tempArray[rand] = tempArray[i]
             tempArray[i] = temp
 
         }
         setArray(tempArray)
+        setScrambled(true)
     }
 
     const RenderVariations = async (variations) => {
@@ -41,40 +43,105 @@ const Content = () => {
         setRendering(false)
     }
 
+    const animateColumnsBubble = async (animations) => {
+        setRendering(true)
+        setScrambled(false)
+        let start = new Date().getTime();
+        const colArray = document.getElementsByClassName("col")
+        for (let i = 0; i < animations.length; i++) {
+            if (i % 2 === 1) {
+                if (animations[i][0] !== -1) {
+                    const tempHeight = colArray[animations[i][0]].style.height;
+                    colArray[animations[i][0]].style.height = colArray[animations[i][1]].style.height;
+                    colArray[animations[i][1]].style.height = tempHeight;
+                }
+            } else {
+                colArray[animations[i][0]].style.backgroundColor = 'red'
+                colArray[animations[i][1]].style.backgroundColor = 'red'
+                await sleep(1)
+                colArray[animations[i][0]].style.backgroundColor = 'black'
+                colArray[animations[i][1]].style.backgroundColor = 'black'
+                await sleep(1)
+            }
+        }
+        let end = new Date().getTime();
+        setVisualTime(end - start)
+        setRendering(false)
+        setScrambled(false)
+    }
+
     const BubbleSort = async () => {
+        const tempArray = [...array]
         let variations = []
+        let animations = []
         let sorted = false
         let start = new Date().getTime();
         while (!sorted) {
             sorted = true
-            for (let i = 0; i < array.length - 1; i++) {
-                if (array[i] > array[i + 1]) {
-                    let temp = array[i]
-                    array[i] = array[i + 1]
-                    array[i + 1] = temp
+            for (let i = 0; i < tempArray.length - 1; i++) {
+                animations.push([i, i + 1])
+                if (tempArray[i] > tempArray[i + 1]) {
+                    animations.push([i, i + 1])
+                    let temp = tempArray[i]
+                    tempArray[i] = tempArray[i + 1]
+                    tempArray[i + 1] = temp
                     sorted = false
+                } else {
+                    animations.push([-1, -1])
                 }
+
             }
-            const tempArray = [...array]
-            variations.push(tempArray)
+            // const tempArray = [...array]
+            // variations.push(tempArray)
         }
         let end = new Date().getTime();
-        setTime(end - start)
-        RenderVariations(variations)
+        setRealTime(end - start)
+        //RenderVariations(variations)
+        animateColumnsBubble(animations)
+    }
+
+    const animateColumnsMerge = async (animations) => {
+        setRendering(true)
+        setScrambled(false)
+        let start = new Date().getTime();
+        const colArray = document.getElementsByClassName("col")
+        for (let i = 0; i < animations.length; i++) {
+            if (animations[i][0] === 0) {
+                colArray[animations[i][1]].style.backgroundColor = 'red'
+                colArray[animations[i][2]].style.backgroundColor = 'red'
+                await sleep(1)
+                colArray[animations[i][1]].style.backgroundColor = 'black'
+                colArray[animations[i][2]].style.backgroundColor = 'black'
+                await sleep(1)
+            }
+            else if (animations[i][0] === 1) {
+                const newHeight = `${animations[i][2] * 5}px`
+                colArray[animations[i][1]].style.height = newHeight;
+            }
+        }
+        setRendering(false)
+        let end = new Date().getTime();
+        setVisualTime(end - start)
+        setScrambled(false)
+
     }
 
     const MergeSort = async () => {
+        let animations = []
         const merge = async (nums, left, mid, right) => {
             let i = left;
             let j = mid + 1;
             let k = left;
-            let temp = [500]
+            let temp = [right - left]
             while (i <= mid && j <= right) {
+                animations.push([0, i, j])
                 if (nums[i] > nums[j]) {
+                    // animations.push([1, i, j])
                     temp[k] = nums[j];
                     j++;
                     k++;
                 } else {
+                    animations.push([-1, -1, -1])
                     temp[k] = nums[i];
                     i++;
                     k++;
@@ -91,10 +158,11 @@ const Content = () => {
                 k++;
             }
             for (let i = left; i < k; i++) {
+                animations.push([1, i, temp[i]])
                 nums[i] = temp[i];
             }
-            const tempArray = [...nums]
-            variations.push(tempArray)
+            // const tempArray = [...nums]
+            // variations.push(tempArray)
         }
 
         const mergeRec = async (nums, left, right) => {
@@ -105,13 +173,14 @@ const Content = () => {
                 merge(nums, left, mid, right);
             }
         }
-        let variations = [];
+        //let variations = [];
         let start = new Date().getTime();
-
-        mergeRec(array, 0, 499);
+        const tempArray = [...array]
+        mergeRec(tempArray, 0, 99);
         let end = new Date().getTime();
-        setTime(end - start)
-        RenderVariations(variations);
+        setRealTime(end - start)
+        animateColumnsMerge(animations)
+        //RenderVariations(variations);
     }
 
     const QuickSort = () => {
@@ -196,13 +265,10 @@ const Content = () => {
         const temp = [...array]
         let start = new Date().getTime();
 
-        sort(temp, 0, 499)
+        sort(temp, 0, 99)
         let end = new Date().getTime();
-        setTime(end - start)
-
-        // console.log(variations)
+        setRealTime(end - start)
         RenderVariations(variations)
-
     }
 
     return (
@@ -229,7 +295,8 @@ const Content = () => {
                     setScrambled(true)
                 }
             }}>Scramble</button>
-            <h3>Time: {time / 1000}</h3>
+            <h3>Real time: {realTime / 1000}</h3>
+            <h3>Visual time: {visualTime / 1000}</h3>
         </div >
     )
 }

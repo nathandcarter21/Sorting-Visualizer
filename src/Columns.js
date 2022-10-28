@@ -3,7 +3,7 @@ const Columns = ({ array }) => {
         {
             array.map((value, index) => {
                 return (
-                    <div className="col" style={{ height: `${value * .5}px` }} key={index}>
+                    <div className="col" style={{ height: `${value * 5}px` }} key={index}>
                     </div >
                 )
             })
