@@ -36,4 +36,5 @@ code {
   border-radius: 1em;
   border: none;
   background-image: linear-gradient(to left top, #63bff5, #5e73ee);
+  font-size: large;
 }

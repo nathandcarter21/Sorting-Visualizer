@@ -6,8 +6,7 @@ const Content = () => {
     useEffect(() => {
         setRandomArray();
     }, [])
-
-    let [array, setArray] = useState([7, 5, 8, 10, 6, 9, 1, 2, 4, 3])
+    let [array, setArray] = useState([])
     let [rendering, setRendering] = useState(false)
     let [scrambled, setScrambled] = useState(true)
     let [realTime, setRealTime] = useState(0.0)
@@ -26,7 +25,10 @@ const Content = () => {
             let temp = tempArray[rand]
             tempArray[rand] = tempArray[i]
             tempArray[i] = temp
-
+        }
+        const colArray = document.getElementsByClassName("col");
+        for (let i = 0; i < colArray.length; i++) {
+            colArray[i].style.height = `${(tempArray[i] + 1) * 5}px`;
         }
         setArray(tempArray)
         setScrambled(true)
@@ -47,10 +49,10 @@ const Content = () => {
             } else {
                 colArray[animations[i][0]].style.backgroundColor = 'red'
                 colArray[animations[i][1]].style.backgroundColor = 'red'
-                await sleep(10)
+                await sleep(1)
                 colArray[animations[i][0]].style.backgroundColor = 'black'
                 colArray[animations[i][1]].style.backgroundColor = 'black'
-                await sleep(10)
+                await sleep(1)
             }
         }
         let end = new Date().getTime();
@@ -94,10 +96,10 @@ const Content = () => {
             if (animations[i][0] === 0) {
                 colArray[animations[i][1]].style.backgroundColor = 'red'
                 colArray[animations[i][2]].style.backgroundColor = 'red'
-                await sleep(10)
+                await sleep(1)
                 colArray[animations[i][1]].style.backgroundColor = 'black'
                 colArray[animations[i][2]].style.backgroundColor = 'black'
-                await sleep(10)
+                await sleep(1)
             }
             else if (animations[i][0] === 1) {
                 const newHeight = `${animations[i][2] * 5}px`
@@ -173,10 +175,10 @@ const Content = () => {
             if (animations[i][0] === 0) {
                 colArray[animations[i][1]].style.backgroundColor = 'red'
                 colArray[animations[i][2]].style.backgroundColor = 'red'
-                await sleep(10)
+                await sleep(1)
                 colArray[animations[i][1]].style.backgroundColor = 'black'
                 colArray[animations[i][2]].style.backgroundColor = 'black'
-                await sleep(10)
+                await sleep(1)
             }
             else if (animations[i][0] === 1) {
                 const tempHeight = colArray[animations[i][1]].style.height;
@@ -236,6 +238,28 @@ const Content = () => {
         animateColumnsQuick(animations)
     }
 
+    const Insertion = () => {
+        let start = new Date().getTime();
+        const temp = [...array]
+        const animations = [];
+        let n = temp.length;
+        for (let i = 1; i < n; i++) {
+            let current = temp[i];
+            let j = i - 1;
+            while ((j > -1) && (current < temp[j])) {
+                animations.push([0, j, j + 1]);
+                animations.push([1, j, j + 1])
+                temp[j + 1] = temp[j];
+                j--;
+            }
+            //animations.push([1, i, j + 1])
+            temp[j + 1] = current;
+        }
+        let end = new Date().getTime();
+        setRealTime(end - start);
+        animateColumnsQuick(animations)
+    }
+
     return (
         <div className="container">
             <Columns array={array} />
@@ -253,7 +277,12 @@ const Content = () => {
                 if (scrambled && !rendering) {
                     QuickSort()
                 }
-            }}>Quicksort</button>
+            }}>Quick</button>
+            <button className="algorithm" onClick={() => {
+                if (scrambled && !rendering) {
+                    Insertion();
+                }
+            }}>Insertion</button>
             <button className="algorithm" onClick={() => {
                 if (!rendering) {
                     setRandomArray()
