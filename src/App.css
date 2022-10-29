@@ -38,3 +38,10 @@ code {
   background-image: linear-gradient(to left top, #63bff5, #5e73ee);
   font-size: large;
 }
+
+.information-section {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  font-size: large;
+}
