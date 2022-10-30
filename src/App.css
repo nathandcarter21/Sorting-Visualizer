@@ -7,13 +7,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-
 .App {
+  min-height: 100vh;
   text-align: center;
 }
 
@@ -44,4 +39,11 @@ code {
   gap: 1em;
   justify-content: center;
   font-size: large;
+}
+
+.footer {
+  margin-top: 5em;
+  text-align: center;
+  height: 40px;
+  width: 100%;
 }
