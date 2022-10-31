@@ -8,7 +8,6 @@ body {
 }
 
 .App {
-  min-height: 100vh;
   text-align: center;
 }
 
@@ -16,7 +15,6 @@ body {
   display: inline-block;
   width: 8px;
   background-color: black;
-
 }
 
 .col p {
@@ -26,6 +24,7 @@ body {
 }
 
 .algorithm {
+  color: black;
   padding: 1em;
   margin: 1em;
   border-radius: 1em;
@@ -46,4 +45,32 @@ body {
   text-align: center;
   height: 40px;
   width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    width: 100%;
+  }
+
+  .col {
+    display: inline-block;
+    width: 4px;
+    background-color: black;
+  }
+
+  .algorithm {
+    padding: .5em;
+    margin: .5em;
+    border-radius: 1em;
+    border: none;
+    background-image: linear-gradient(to left top, #63bff5, #5e73ee);
+    font-size: large;
+  }
+
+  .information-section {
+    display: flex;
+    gap: .5em;
+    justify-content: center;
+    font-size: medium;
+  }
 }
