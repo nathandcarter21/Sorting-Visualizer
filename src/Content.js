@@ -8,14 +8,20 @@ const Content = () => {
         setRandomArray();
     }, []);
 
+    //set speed to users input
+    const handleChangeSpeed = (e) => {
+        setSpeed(e.target.value);
+    }
+
     //initialize state variables for different metrics
-    let [array, setArray] = useState([])
-    let [rendering, setRendering] = useState(false)
-    let [scrambled, setScrambled] = useState(false)
-    let [realTime, setRealTime] = useState(0.0)
-    let [visualTime, setVisualTime] = useState(0.0)
-    let [comparisons, setComparisons] = useState(0)
-    let [swaps, setSwaps] = useState(0)
+    let [array, setArray] = useState([]);
+    let [rendering, setRendering] = useState(false);
+    let [scrambled, setScrambled] = useState(false);
+    let [realTime, setRealTime] = useState(0.0);
+    let [visualTime, setVisualTime] = useState(0.0);
+    let [comparisons, setComparisons] = useState(0);
+    let [swaps, setSwaps] = useState(0);
+    let [speed, setSpeed] = useState(1);
 
     //function to pause animations for ms milliseconds
     const sleep = (ms) => {
@@ -258,10 +264,10 @@ const Content = () => {
             if (animations[i][0] === 0) {
                 colArray[animations[i][1]].style.backgroundColor = 'red';
                 colArray[animations[i][2]].style.backgroundColor = 'red';
-                await sleep(1);
+                await sleep(speed);
                 colArray[animations[i][1]].style.backgroundColor = 'black';
                 colArray[animations[i][2]].style.backgroundColor = 'black';
-                await sleep(1);
+                await sleep(speed);
             }
             else if (animations[i][0] === 1) {
                 const newHeight = `${animations[i][2] * 5}px`;
@@ -288,10 +294,10 @@ const Content = () => {
             if (animations[i][0] === 0) {
                 colArray[animations[i][1]].style.backgroundColor = 'red';
                 colArray[animations[i][2]].style.backgroundColor = 'red';
-                await sleep(1);
+                await sleep(speed);
                 colArray[animations[i][1]].style.backgroundColor = 'black';
                 colArray[animations[i][2]].style.backgroundColor = 'black';
-                await sleep(1);
+                await sleep(speed);
             }
             else if (animations[i][0] === 1) {
                 const tempHeight = colArray[animations[i][1]].style.height;
@@ -340,6 +346,10 @@ const Content = () => {
                 <div className="info">Visual time: {visualTime === 0 ? '...' : `${visualTime / 1000} s`}</div>
                 <div className="info">Comparisons: {comparisons}</div>
                 <div className="info">Swaps: {swaps}</div>
+                <label htmlFor="speed">Delay(ms):</label>
+                <input value={speed} type="text" name="speed" id="speed" onChange={(e) => {
+                    handleChangeSpeed(e);
+                }} />
             </div>
         </div >
     )
