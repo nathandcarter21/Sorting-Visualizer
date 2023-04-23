@@ -7,8 +7,10 @@ function App() {
       <nav>
         <h1>Sorting Algorithm Visualizer</h1>
       </nav>
+
       <Content />
-      <footer className="footer">
+
+      <footer>
         <p>Created by Nathan Carter</p>
         <a
           href="https://github.com/nathandcarter21/Sorting-Visualizer"

@@ -24,7 +24,7 @@ const Content = () => {
   let [comparisons, setComparisons] = useState(0);
   let [swaps, setSwaps] = useState(0);
   let [speed, setSpeed] = useState(1);
-  const [algorithm, setAlgorithm] = useState("Quick Sort");
+  let [algorithm, setAlgorithm] = useState("Quick Sort");
 
   const arraySize = 75;
 
@@ -298,8 +298,8 @@ const Content = () => {
         colArray[animations[i][1]].style.backgroundColor = "red";
         colArray[animations[i][2]].style.backgroundColor = "red";
         await sleep(speed);
-        colArray[animations[i][1]].style.backgroundColor = "black";
-        colArray[animations[i][2]].style.backgroundColor = "black";
+        colArray[animations[i][1]].style.backgroundColor = "#252525";
+        colArray[animations[i][2]].style.backgroundColor = "#252525";
         await sleep(speed);
       } else if (animations[i][0] === 1) {
         const tempHeight = colArray[animations[i][1]].style.height;
@@ -340,9 +340,10 @@ const Content = () => {
         props={{
           scrambled,
           rendering,
+          algorithm,
+          speed,
           setAlgorithm,
           handleChangeSpeed,
-          speed,
           setRandomArray,
           setScrambled,
           startSort,
