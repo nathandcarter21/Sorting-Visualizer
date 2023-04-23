@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import Chart from "./Chart";
 import Controls from "./Controls";
 
@@ -9,33 +9,34 @@ const Content = () => {
   }, []);
 
   //set speed to users input
-  const handleChangeSpeed = (e) => {
-    if (e.target.value.length < 4 && e.target.value >= 0) {
-      setSpeed(e.target.value);
+  const handleChangeSpeed = (e: ChangeEvent<HTMLInputElement>) => {
+    let speed: number = parseInt(e.target.value);
+    if (e.target.value.length < 4 && speed >= 0) {
+      setSpeed(speed);
     }
   };
 
   //initialize state variables for different metrics
-  let [array, setArray] = useState([]);
-  let [rendering, setRendering] = useState(false);
-  let [scrambled, setScrambled] = useState(false);
-  let [realTime, setRealTime] = useState(0.0);
-  let [visualTime, setVisualTime] = useState(0.0);
-  let [comparisons, setComparisons] = useState(0);
-  let [swaps, setSwaps] = useState(0);
-  let [speed, setSpeed] = useState(1);
-  let [algorithm, setAlgorithm] = useState("Quick Sort");
+  let [array, setArray] = useState<number[]>([]);
+  let [rendering, setRendering] = useState<boolean>(false);
+  let [scrambled, setScrambled] = useState<boolean>(false);
+  let [realTime, setRealTime] = useState<number>(0.0);
+  let [visualTime, setVisualTime] = useState<number>(0.0);
+  let [comparisons, setComparisons] = useState<number>(0);
+  let [swaps, setSwaps] = useState<number>(0);
+  let [speed, setSpeed] = useState<number>(1);
+  let [algorithm, setAlgorithm] = useState<string>("Quick Sort");
 
   const arraySize = 75;
 
   //function to pause animations for ms milliseconds
-  const sleep = (ms) => {
+  const sleep = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
   //function to create an array of size 100, and randomize its contents
   const setRandomArray = () => {
-    let tempArray = [arraySize];
+    let tempArray: number[] = [arraySize];
 
     for (let i = 0; i < arraySize; i++) {
       tempArray[i] = i + 1;
@@ -48,7 +49,7 @@ const Content = () => {
       tempArray[i] = temp;
     }
 
-    const colArray = document.getElementsByClassName("col");
+    const colArray = document.querySelectorAll<HTMLElement>(".col");
 
     for (let i = 0; i < colArray.length; i++) {
       colArray[i].style.height = `${(tempArray[i] + 1) * 5}px`;
@@ -64,7 +65,7 @@ const Content = () => {
   //function to bubble sort array and store animations
   const BubbleSort = async () => {
     const tempArray = [...array];
-    let animations = [];
+    let animations: [number, number, number][] = [];
     let comparisons = 0;
     let swaps = 0;
     let start = new Date().getTime();
@@ -83,7 +84,7 @@ const Content = () => {
           tempArray[i + 1] = temp;
           sorted = false;
         } else {
-          animations.push([-1, -1]);
+          animations.push([-1, -1, 0]);
         }
       }
     }
@@ -99,7 +100,7 @@ const Content = () => {
   //function to insertion sort array and store animations
   const Insertion = () => {
     const temp = [...array];
-    const animations = [];
+    const animations: [number, number, number][] = [];
     let start = new Date().getTime();
     let comparisons = 0;
     let swaps = 0;
@@ -130,7 +131,12 @@ const Content = () => {
 
   //function to merge sort array and store animations
   const MergeSort = async () => {
-    const merge = async (nums, left, mid, right) => {
+    const merge = async (
+      nums: number[],
+      left: number,
+      mid: number,
+      right: number
+    ) => {
       let i = left;
       let j = mid + 1;
       let k = left;
@@ -170,7 +176,7 @@ const Content = () => {
       }
     };
 
-    const mergeRec = async (nums, left, right) => {
+    const mergeRec = async (nums: number[], left: number, right: number) => {
       if (left < right) {
         let mid = Math.floor((left + right) / 2);
 
@@ -181,7 +187,7 @@ const Content = () => {
       }
     };
     const tempArray = [...array];
-    let animations = [];
+    let animations: [number, number, number][] = [];
     let comparisons = 0;
     let swaps = 0;
     let start = new Date().getTime();
@@ -198,7 +204,12 @@ const Content = () => {
 
   //function to quick sort array and store animations
   const QuickSort = () => {
-    const partition = (nums, left, right, pivot) => {
+    const partition = (
+      nums: number[],
+      left: number,
+      right: number,
+      pivot: number
+    ) => {
       let pivotVal = nums[pivot];
       let i = left;
       let j = right;
@@ -229,7 +240,7 @@ const Content = () => {
       return i;
     };
 
-    const sort = (nums, left, right) => {
+    const sort = (nums: number[], left: number, right: number) => {
       if (right - left > 0) {
         let pivot = Math.floor((left + right) / 2);
 
@@ -241,7 +252,7 @@ const Content = () => {
     };
 
     const temp = [...array];
-    let animations = [];
+    let animations: [number, number, number][] = [];
     let comparisons = 0;
     let swaps = 0;
     let start = new Date().getTime();
@@ -257,14 +268,16 @@ const Content = () => {
   };
 
   //function to animate merge sort
-  const animateColumnsMerge = async (animations) => {
+  const animateColumnsMerge = async (
+    animations: [number, number, number][]
+  ) => {
     setRendering(true);
     setScrambled(false);
     setVisualTime(0.0);
 
     let start = new Date().getTime();
 
-    const colArray = document.getElementsByClassName("col");
+    const colArray = document.querySelectorAll<HTMLElement>(".col");
     for (let i = 0; i < animations.length; i++) {
       if (animations[i][0] === 0) {
         colArray[animations[i][1]].style.backgroundColor = "red";
@@ -286,13 +299,15 @@ const Content = () => {
   };
 
   //function to animate bubble, insertion, and quicksort
-  const animateColumnsQuick = async (animations) => {
+  const animateColumnsQuick = async (
+    animations: [number, number, number][]
+  ) => {
     setVisualTime(0.0);
     setRendering(true);
     setScrambled(false);
     let start = new Date().getTime();
 
-    const colArray = document.getElementsByClassName("col");
+    const colArray = document.querySelectorAll<HTMLElement>(".col");
     for (let i = 0; i < animations.length; i++) {
       if (animations[i][0] === 0) {
         colArray[animations[i][1]].style.backgroundColor = "red";
@@ -330,25 +345,32 @@ const Content = () => {
     }
   };
 
+  const chartProps = {
+    algorithm,
+    array,
+    realTime,
+    visualTime,
+    swaps,
+    comparisons,
+  };
+
+  const controlProps = {
+    scrambled,
+    rendering,
+    algorithm,
+    speed,
+    setAlgorithm,
+    handleChangeSpeed,
+    setRandomArray,
+    setScrambled,
+    startSort,
+  };
+
   return (
     <>
-      <Chart
-        props={{ algorithm, array, realTime, visualTime, swaps, comparisons }}
-      />
+      <Chart {...chartProps} />
 
-      <Controls
-        props={{
-          scrambled,
-          rendering,
-          algorithm,
-          speed,
-          setAlgorithm,
-          handleChangeSpeed,
-          setRandomArray,
-          setScrambled,
-          startSort,
-        }}
-      />
+      <Controls {...controlProps} />
     </>
   );
 };

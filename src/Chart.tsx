@@ -1,6 +1,15 @@
 import Columns from "./Columns";
 
-const Chart = ({ props }) => {
+type ChartProps = {
+  array: number[];
+  algorithm: string;
+  realTime: number;
+  visualTime: number;
+  swaps: number;
+  comparisons: number;
+};
+
+const Chart: React.FunctionComponent<ChartProps> = (props) => {
   return (
     <section className="chart">
       <h3>{props.algorithm}</h3>

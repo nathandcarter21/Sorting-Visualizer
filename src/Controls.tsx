@@ -1,4 +1,18 @@
-const Controls = ({ props }) => {
+import { ChangeEvent } from "react";
+
+type ControlProps = {
+  rendering: boolean;
+  algorithm: string;
+  speed: number;
+  scrambled: boolean;
+  startSort: () => void;
+  setRandomArray: () => void;
+  handleChangeSpeed: (e: ChangeEvent<HTMLInputElement>) => void;
+  setAlgorithm: (algo: string) => void;
+  setScrambled: (valid: boolean) => void;
+};
+
+const Controls: React.FunctionComponent<ControlProps> = (props) => {
   return (
     <div className="controls">
       <div className="algorithms">

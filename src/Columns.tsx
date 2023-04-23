@@ -1,7 +1,13 @@
-const Columns = ({ array }) => {
+import React from "react";
+
+type ColumnProps = {
+  array: number[];
+};
+
+const Columns: React.FunctionComponent<ColumnProps> = (props) => {
   return (
     <div className="columns">
-      {array.map((value, index) => {
+      {props.array.map((value: number, index: number) => {
         return (
           <div
             className="col"
