@@ -1,5 +1,5 @@
-import './App.css';
-import Content from './Content';
+import "./App.css";
+import Content from "./Content";
 
 function App() {
   return (
@@ -9,7 +9,17 @@ function App() {
       </nav>
       <Content />
       <footer className="footer">
-        <h4>Created by Nathan Carter</h4>
+        <p>Created by Nathan Carter</p>
+        <a
+          href="https://github.com/nathandcarter21/Sorting-Visualizer"
+          className="footerLink">
+          Github
+        </a>
+        <a
+          href="https://www.linkedin.com/in/nathandcarter21"
+          className="footerLink">
+          LinkedIn
+        </a>
       </footer>
     </div>
   );
