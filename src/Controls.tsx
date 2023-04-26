@@ -15,52 +15,66 @@ type ControlProps = {
 const Controls: React.FunctionComponent<ControlProps> = (props) => {
   return (
     <div className="controls">
-      <div className="algorithms">
+      <div className="sliderContainer">
+        <div className="algorithms">
+          <button
+            className="algorithm"
+            onClick={() => {
+              if (!props.rendering) {
+                props.setAlgorithm("Quick Sort");
+                const slider = document.querySelector<HTMLElement>(".slider");
+                if (slider) {
+                  slider.style.left = "-264px";
+                  slider.style.width = "55px";
+                }
+              }
+            }}>
+            Quick
+          </button>
+          <button
+            className="algorithm"
+            onClick={() => {
+              if (!props.rendering) {
+                props.setAlgorithm("Merge Sort");
+                const slider = document.querySelector<HTMLElement>(".slider");
+                if (slider) {
+                  slider.style.left = "-208px";
+                  slider.style.width = "55px";
+                }
+              }
+            }}>
+            Merge
+          </button>
+          <button
+            className="algorithm"
+            onClick={() => {
+              if (!props.rendering) {
+                props.setAlgorithm("Insertion Sort");
+                const slider = document.querySelector<HTMLElement>(".slider");
+                if (slider) {
+                  slider.style.left = "-150px";
+                  slider.style.width = "77px";
+                }
+              }
+            }}>
+            Insertion
+          </button>
+          <button
+            className="algorithm"
+            onClick={() => {
+              if (!props.rendering) {
+                props.setAlgorithm("Bubble Sort");
+                const slider = document.querySelector<HTMLElement>(".slider");
+                if (slider) {
+                  slider.style.left = "-72px";
+                  slider.style.width = "65px";
+                }
+              }
+            }}>
+            Bubble
+          </button>
+        </div>
         <div className="slider"></div>
-        <button
-          className={`algorithm ${
-            props.algorithm === "Quick Sort" ? "selected" : ""
-          }`}
-          onClick={() => {
-            if (!props.rendering) {
-              props.setAlgorithm("Quick Sort");
-            }
-          }}>
-          Quick
-        </button>
-        <button
-          className={`algorithm ${
-            props.algorithm === "Merge Sort" ? "selected" : ""
-          }`}
-          onClick={() => {
-            if (!props.rendering) {
-              props.setAlgorithm("Merge Sort");
-            }
-          }}>
-          Merge
-        </button>
-        <button
-          className={`algorithm ${
-            props.algorithm === "Insertion Sort" ? "selected" : ""
-          }`}
-          onClick={() => {
-            if (!props.rendering) {
-              props.setAlgorithm("Insertion Sort");
-            }
-          }}>
-          Insertion
-        </button>
-        <button
-          className={`algorithm ${
-            props.algorithm === "Bubble Sort" ? "selected" : ""
-          }`}
-          onClick={() => {
-            if (!props.rendering) {
-              props.setAlgorithm("Bubble Sort");
-            }
-          }}>
-          Bubble
-        </button>
       </div>
       <div className="runSort">
         <div className="speedControl">

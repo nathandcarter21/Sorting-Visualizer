@@ -76,10 +76,24 @@
   padding: 0.35rem;
   transition: 0.3s ease-in-out;
   font-size: 15px;
+  z-index: 2;
 }
 
-.algorithm.selected {
+.sliderContainer {
+  display: flex;
+}
+
+.slider {
+  width: 55px;
+  height: 30px;
+  border-radius: 0.8rem;
   background-color: #d0dae0;
+  position: relative;
+  display: inline-block;
+  left: -264px;
+  top: 5px;
+  z-index: 1;
+  transition: all 0.5s ease-in-out;
 }
 
 .algorithm:hover {
@@ -137,8 +151,8 @@ footer {
 }
 
 @media screen and (max-width: 600px) {
-  .controls {
-    justify-content: space-evenly;
+  .runSort {
+    width: 100%;
   }
   .columns {
     padding-left: 0;
